@@ -11,7 +11,15 @@ function App() {
   const [todo, setTodo] = useState("")
   const [todos, setTodos] = useState([])
 
-  const handleEdit = ()=>{
+  const handleEdit = (e,id)=>{
+    let t = todos.filter(i=>i.id ===id)
+      setTodo(t[0].todo)
+
+      let newTodos = todos.filter(item =>{
+      return item.id !==id
+     })
+     
+     setTodos(newTodos)
     
   }
 
@@ -64,14 +72,19 @@ function App() {
           </div> 
           <h2 className='text-lg font-bold'>Your TO DO</h2>
           <div className="todos">
+          {todos.length===0 && <div className='m-5'>No Todos to Show</div>}
+          
             {todos.map(item=> {
 
             
            return <div key={item.id} className="todo w-1/4 flex justify-between my-3">
+            <div className='flex gap-5'>
+
             <input name={item.id} onChange={handleCheckbox} type ="checkbox" value={todo.iscompleted} id="" />
               <div className={item.iscompleted?"line-through" : ""}>{item.todo}</div>
+            </div>
               <div className="buttons">
-                <button onClick={handleEdit} className=' text-sm font-bold bg-violet-800 hover:bg-violet-950 text-white rounded-md p-2 py-1 m-1'>Edit</button>
+                <button onClick={(e)=>handleEdit(e,item.id)} className=' text-sm font-bold bg-violet-800 hover:bg-violet-950 text-white rounded-md p-2 py-1 m-1'>Edit</button>
                 <button onClick={(e)=>{handleDelete(e,item.id)}} className=' text-sm font-bold bg-violet-800 hover:bg-violet-950 text-white rounded-md p-2 py-1 m-1'>Delete</button>
 
               </div>
