@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
@@ -10,6 +10,20 @@ function App() {
   const [count, setCount] = useState(0)
   const [todo, setTodo] = useState("")
   const [todos, setTodos] = useState([])
+  const saveTols = (params) => {
+    localStorage.setItem("todos", JSON.stringify(todos))
+  }
+
+  useEffect(() => {
+    let todoString = localStorage.getItem("todos")
+    if(todoString){
+      let todos = JSON.parse(localStorage.getItem("todos"))
+      setTodos(todos)
+    }
+
+    
+  }, [])
+  
 
   const handleEdit = (e,id)=>{
     let t = todos.filter(i=>i.id ===id)
@@ -20,6 +34,7 @@ function App() {
      })
      
      setTodos(newTodos)
+     saveTols()
     
   }
 
@@ -34,6 +49,7 @@ function App() {
      })
      
      setTodos(newTodos)
+     saveTols()
   }
 
 
@@ -46,6 +62,7 @@ function App() {
   const handleChange = (e)=>{
     
     setTodo(e.target.value)
+    saveTols()
   }
 
 
@@ -53,6 +70,7 @@ function App() {
     let id = e.target.name
     let index = todos.findIndex(item => {
       return item.id == id;
+      saveTols()
     })
 
     let newTodos = [...todos]
@@ -83,7 +101,7 @@ function App() {
             <input name={item.id} onChange={handleCheckbox} type ="checkbox" value={todo.iscompleted} id="" />
               <div className={item.iscompleted?"line-through" : ""}>{item.todo}</div>
             </div>
-              <div className="buttons">
+              <div className="buttons flex h-full">
                 <button onClick={(e)=>handleEdit(e,item.id)} className=' text-sm font-bold bg-violet-800 hover:bg-violet-950 text-white rounded-md p-2 py-1 m-1'>Edit</button>
                 <button onClick={(e)=>{handleDelete(e,item.id)}} className=' text-sm font-bold bg-violet-800 hover:bg-violet-950 text-white rounded-md p-2 py-1 m-1'>Delete</button>
 
