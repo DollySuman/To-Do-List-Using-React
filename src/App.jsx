@@ -4,6 +4,8 @@ import viteLogo from '/vite.svg'
 import './App.css'
 import Navbar from './components/Navbar'
 import { v4 as uuidv4 } from 'uuid';
+import { FaEdit } from "react-icons/fa";
+import { MdDelete } from "react-icons/md";
 
 
 function App() {
@@ -14,6 +16,8 @@ function App() {
     localStorage.setItem("todos", JSON.stringify(todos))
   }
 
+  const [showFinished, setshowFinished] = useState(true)
+
   useEffect(() => {
     let todoString = localStorage.getItem("todos")
     if(todoString){
@@ -23,6 +27,11 @@ function App() {
 
     
   }, [])
+
+  const togglefinsihed = () => {
+    setshowFinished(!showFinished)
+  }
+  
   
 
   const handleEdit = (e,id)=>{
@@ -82,28 +91,30 @@ function App() {
   return (
     <>
       <Navbar/>
-      <div className="container mx-auto bg-violet-100 rounded-xl p-3 min-h-[80vh]"> 
-        <div className="addtodo my-5">
+      <div className="mx-3 md:container md:mx-auto bg-violet-100 rounded-xl p-3 min-h-[80vh] md:w-1/2"> 
+      <h1 className='font-bold text-xl text-center'>iTask Manage your tasks at one place</h1>
+        <div className="addtodo my-5 flex flex-col gap-4">
           <h2 className='text-lg font-bold'>Add a ToDo</h2>
-          <input onChange={handleChange} value={todo} className='bg-white w-1/2' type="text" placeholder='Add Your Tasks here' />
-          <button onClick={handleAdd} className=' text-sm font-bold bg-violet-800 hover:bg-violet-950 text-white rounded-md p-2 py-1 m-4'>Add</button>
+          <input  onChange={handleChange} value={todo} className='bg-white w-full rounded-lg px-5 py-1' type="text" placeholder='Add Your Tasks here' />
+          <button onClick={handleAdd} disabled={todo.length<=3} className=' text-sm font-bold bg-violet-800 hover:bg-violet-950 text-white rounded-md p-2 py-1 disabled:bg-violet-950'>Save</button>
           </div> 
-          <h2 className='text-lg font-bold'>Your TO DO</h2>
+          <input onChange={togglefinsihed} type="checkbox" checked={showFinished} /> Show Finished
+          <h2 className='my-4 text-lg font-bold'>Your TO DO</h2>
           <div className="todos">
           {todos.length===0 && <div className='m-5'>No Todos to Show</div>}
           
             {todos.map(item=> {
 
             
-           return <div key={item.id} className="todo w-1/4 flex justify-between my-3">
+           return (showFinished || item.iscompleted) && <div key={item.id} className="todo flex justify-between my-3">
             <div className='flex gap-5'>
 
-            <input name={item.id} onChange={handleCheckbox} type ="checkbox" value={todo.iscompleted} id="" />
+            <input name={item.id} onChange={handleCheckbox} type ="checkbox" checked={item.iscompleted} id="" />
               <div className={item.iscompleted?"line-through" : ""}>{item.todo}</div>
             </div>
               <div className="buttons flex h-full">
-                <button onClick={(e)=>handleEdit(e,item.id)} className=' text-sm font-bold bg-violet-800 hover:bg-violet-950 text-white rounded-md p-2 py-1 m-1'>Edit</button>
-                <button onClick={(e)=>{handleDelete(e,item.id)}} className=' text-sm font-bold bg-violet-800 hover:bg-violet-950 text-white rounded-md p-2 py-1 m-1'>Delete</button>
+                <button onClick={(e)=>handleEdit(e,item.id)} className=' text-sm font-bold bg-violet-800 hover:bg-violet-950 text-white rounded-md p-2 py-1 m-1'><FaEdit /></button>
+                <button onClick={(e)=>{handleDelete(e,item.id)}} className=' text-sm font-bold bg-violet-800 hover:bg-violet-950 text-white rounded-md p-2 py-1 m-1'><MdDelete /></button>
 
               </div>
 
@@ -117,3 +128,7 @@ function App() {
 }
 
 export default App
+
+
+//fix ls refresh last
+//Show finished is also broken fix it
