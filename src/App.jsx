@@ -92,13 +92,15 @@ function App() {
     <>
       <Navbar/>
       <div className="mx-3 md:container md:mx-auto bg-violet-100 rounded-xl p-3 min-h-[80vh] md:w-1/2"> 
-      <h1 className='font-bold text-xl text-center'>iTask Manage your tasks at one place</h1>
+      <h1 className='font-bold text-3xl text-center'>iTask Manage your tasks at one place</h1>
         <div className="addtodo my-5 flex flex-col gap-4">
-          <h2 className='text-lg font-bold'>Add a ToDo</h2>
+          <h2 className='text-xl font-bold'>Add a ToDo</h2>
           <input  onChange={handleChange} value={todo} className='bg-white w-full rounded-lg px-5 py-1' type="text" placeholder='Add Your Tasks here' />
-          <button onClick={handleAdd} disabled={todo.length<=3} className=' text-sm font-bold bg-violet-800 hover:bg-violet-950 text-white rounded-md p-2 py-1 disabled:bg-violet-950'>Save</button>
+          <button onClick={handleAdd} disabled={todo.length<=3} className=' text-sm font-bold bg-violet-800 hover:bg-violet-950 text-white p-4 py-2 disabled:bg-violet-950 rounded-2xl'>Save</button>
           </div> 
-          <input onChange={togglefinsihed} type="checkbox" checked={showFinished} /> Show Finished
+          <input className='my-4' id='show' onChange={togglefinsihed} type="checkbox" checked={showFinished} /> Show Finished
+          <label className='mx-2' htmlFor="show"></label>
+          <hr className='my-2' />
           <h2 className='my-4 text-lg font-bold'>Your TO DO</h2>
           <div className="todos">
           {todos.length===0 && <div className='m-5'>No Todos to Show</div>}
